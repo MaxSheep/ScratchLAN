@@ -2,8 +2,13 @@ const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
 const axios = require("axios");
-import config from './config'
+// const config = require("./config")
 
+const PORT = 8001;
+
+// Others
+const OTHER_PORT_1 = 8001;
+const OTHER_HOST_1 = '192.168.56.1';
 // Set up body-parser middleware
 app.use(bodyParser.urlencoded({ extended: true }));
 
@@ -18,7 +23,7 @@ app.post('/data', (req, res) => {
     const { data } = req.body;
 
     // Send a request to another PC on the same LAN
-    axios.post(`http://${config.OTHER_PORT_1}:${config.OTHER_HOST_1}}/data`, data)
+    axios.post(`http://${OTHER_PORT_1}:${OTHER_HOST_1}}/data`, data)
     .then((response) => {
         res.status(200).send('Data sent to other PC');
     })
@@ -29,6 +34,6 @@ app.post('/data', (req, res) => {
 });
 
 // Start server on port 8001
-app.listen(config.PORT, () => {
+app.listen(PORT, () => {
     console.log('Server listening on port 8001');
 });

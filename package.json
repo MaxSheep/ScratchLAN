@@ -1,9 +1,13 @@
 {
   "name": "scratch-lan",
   "version": "1.0.0",
+  "scripts": {
+    "start": "node server.js"
+  },
   "dependencies": {
     "express": "4.x.x",
     "axios": "1.x.x",
-    "body-parser": "1.x.x"
+    "body-parser": "1.x.x",
+    "cors": "2.x.x"
   }
 }

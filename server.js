@@ -2,6 +2,7 @@ const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
 const axios = require("axios");
+const cors = require("cors");
 // const config = require("./config")
 
 const PORT = 8001;
@@ -9,8 +10,15 @@ const PORT = 8001;
 // Others
 const OTHER_PORT_1 = 8001;
 const OTHER_HOST_1 = '192.168.56.1';
+
+const corsOptions = {
+    origin: [ 'http://localhost:8601' ],
+}
+
 // Set up body-parser middleware
 app.use(bodyParser.urlencoded({ extended: true }));
+
+app.use(cors(corsOptions))
 
 // Endpoint for Scratch to check server status
 app.get('/poll', (req, res) => {

@@ -20,6 +20,10 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(cors(corsOptions))
 
+app.get('/', (req, res) => {
+    res.status(200).send('working fine! :)');
+});
+
 // Endpoint for Scratch to check server status
 app.get('/poll', (req, res) => {
     res.status(200).send('Server is running');

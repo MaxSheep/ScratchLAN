@@ -1,9 +1,9 @@
-{   "extensionName": "Tello",
+{   "extensionName": "ScratchLAN",
     "extensionPort": 8001,
     "blockSpecs": [
 // SDK VERSION >= 1.0.0.0"],
         [" ", "land", "land"],
-        [" ", "takeoff", "takeoff
+        [" ", "takeoff", "takeoff"],
         [" ", "fly up %n cm", "up", 50],
         [" ", "fly down %n cm", "down", 50],
         [" ", "fly left %n cm", "left", 50],

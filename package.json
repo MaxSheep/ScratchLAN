@@ -5,9 +5,10 @@
     "start": "node server.js"
   },
   "dependencies": {
-    "express": "4.x.x",
     "axios": "1.x.x",
     "body-parser": "1.x.x",
-    "cors": "2.x.x"
+    "cors": "2.x.x",
+    "express": "4.x.x",
+    "socket.io": "^4.6.1"
   }
 }

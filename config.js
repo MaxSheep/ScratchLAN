@@ -7,4 +7,4 @@ const config = {
     OTHER_HOST_1: '192.168.56.1',
 };
 
-export default config;
+module.exports = config;

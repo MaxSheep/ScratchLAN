@@ -3,22 +3,31 @@ const app = express();
 const bodyParser = require('body-parser');
 const axios = require("axios");
 const cors = require("cors");
-// const config = require("./config")
-
-const PORT = 8001;
-
-// Others
-const OTHER_PORT_1 = 8001;
-const OTHER_HOST_1 = '192.168.56.1';
+const http = require('http');
+const { Server } = require("socket.io");
+const config = require("./config")
+const socketConstants = require("./constants/socket-constants");
+const socketsMiddleware = require("./middlewares/sockets")
 
 const corsOptions = {
     origin: [ 'http://localhost:8601' ],
 }
 
+const server = http.createServer(app);
+const io = new Server(server, {
+    cors: corsOptions
+});
+
 // Set up body-parser middleware
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(cors(corsOptions))
+
+app.use((req, res, next) => {
+    // Middleware that makes socket.io available in routes.
+    res.io = io;
+    next();
+});
 
 app.get('/', (req, res) => {
     res.status(200).send('working fine! :)');
@@ -29,23 +38,24 @@ app.get('/poll', (req, res) => {
     res.status(200).send('Server is running');
 });
 
-// Endpoint for Scratch to send data to the server
-app.post('/data', (req, res) => {
-    // Extract data from Scratch's request
-    const { data } = req.body;
+io.on(socketConstants.connection, (socket) => {
+    console.log("Client connected!");
 
-    // Send a request to another PC on the same LAN
-    axios.post(`http://${OTHER_PORT_1}:${OTHER_HOST_1}}/data`, data)
-    .then((response) => {
-        res.status(200).send('Data sent to other PC');
-    })
-    .catch((error) => {
-        console.error(error);
-        res.status(500).send('Error sending data to other PC');
-    })
+    socketsMiddleware(io, socket);
+
+    socket.on(socketConstants.disconnect, () => {
+        console.log("Client disconnected!");
+    });
 });
 
-// Start server on port 8001
-app.listen(PORT, () => {
+
+// Errors
+app.use((err) => console.error(err));
+app.use((req, res) => {
+    res.status(404).send("Resource not found!");
+});
+
+// Start server on port 8001 (default)
+server.listen(config.PORT, () => {
     console.log('Server listening on port 8001');
 });
